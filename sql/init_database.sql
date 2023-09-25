@@ -1,0 +1,12 @@
+CREATE TABLE IF NOT EXISTS soil_moisture (
+  id VARCHAR(255) PRIMARY KEY,
+  moisture INTEGER NOT NULL,
+  moisture_percentage DOUBLE PRECISION NOT NULL,
+  create_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS water_pump_event (
+  id VARCHAR(255) PRIMARY KEY ,
+  moisture_id VARCHAR(255) NOT NULL,
+  create_at TIMESTAMP NOT NULL
+);
