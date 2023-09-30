@@ -1,0 +1,43 @@
+version: '3'
+
+networks:
+  smart-farming:
+    external: true
+
+services:
+  postgres:
+    image: postgres:16rc1-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=smart_farming
+    ports:
+      - '5432:5432'
+    volumes: 
+      - ${PWD}/db:/var/lib/postgresql/data
+      - ${PWD}/sql/init_database.sql:/docker-entrypoint-initdb.d/create_tables.sql
+  
+  prometheus:
+    image: prom/prometheus
+    restart: unless-stopped
+    volumes:
+      - ${PWD}/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ${PWD}/prom_data:/prometheus
+    ports:
+      - "9090:9090"
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+  
+  grafana:
+    image: grafana/grafana-enterprise
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      -  ${PWD}/grafana-storage:/var/lib/grafana
+  
+
+volumes:
+  db:
+    driver: local
