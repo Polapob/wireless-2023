@@ -40,7 +40,15 @@ services:
       - "3000:3000"
     volumes:
       -  ${PWD}/grafana-storage:/var/lib/grafana
-  
+
+  pgAdmin:
+    image: dpage/pgadmin4
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root  
 
 volumes:
   db:
